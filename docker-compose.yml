@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  webhook:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET:-change-me-in-production}
+      - DRY_RUN=${DRY_RUN:-true}
+      - BROKER=${BROKER:-simulate}
+      - PAPER_CAPITAL=${PAPER_CAPITAL:-10000.0}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - ENABLE_METRICS=${ENABLE_METRICS:-true}
+    volumes:
+      # Mount data and logs for persistence
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  # Optional: Prometheus for metrics scraping
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    depends_on:
+      - webhook
+
+networks:
+  default:
+    name: trade-vibte-network
