@@ -204,6 +204,46 @@ black .
 mypy app/
 ```
 
+## Daily Supertrend Analysis
+
+A scheduled script scans the top 10–20 crypto pairs and generates a daily Supertrend signal report highlighting profitable trends from the last 24 hours.
+
+### Usage
+
+```bash
+# Generate report manually
+make supertrend
+# or
+.venv/bin/python scripts/generate_daily_supertrend.py
+```
+
+Reports are saved to `docs/supertrend/daily_supertrend_YYYY-MM-DD_HH-MM-SS.txt` with a `daily_supertrend_latest.txt` symlink.
+
+### Scheduling
+
+See [docs/scheduling/DAILY_SCHEDULE.md](docs/scheduling/DAILY_SCHEDULE.md) for cron and systemd timer setup.
+
+### Configuration
+
+- **ATR Length:** 10
+- **Multiplier:** 3.0
+- **Primary timeframe:** 15m
+- **Confirmation:** 1h, 4h
+
+The script uses synthetic demo data by default. For live data install `ccxt`:
+
+```bash
+pip install -r requirements-analysis.txt
+```
+
+Then set `use_live = True` in `scripts/generate_daily_supertrend.py`.
+
+### Methodology
+
+Read `skill/Supertrend.md` for the complete strategy, confidence scoring algorithm, and filtering rules.
+
+---
+
 ## Project Structure
 
 ```

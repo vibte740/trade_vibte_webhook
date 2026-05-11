@@ -1,125 +1,247 @@
-Daily Supertrend Analysis - 2026-05-10 22:43:08
+Daily Supertrend Analysis - 2026-05-11 22:42:32
 Supertrend Settings: ATR Length=10, Multiplier=3.0
 Timeframes: 15m (primary), 1h, 4h (confirmation)
 ============================================================
 
-1. BTCUSDT
-   Direction: SHORT (bearish)
-   Signal Time: 2026-05-10 08:43
-   Profit After Signal: 7.9%
-   Trend Duration: 5 hours
-   Supertrend Value: 66379.44
-   Current Price: $72313.1
-   Price Change: 7.93%
-   Volume Confirmation: False
-   Confidence: high
-   Timestamp: 2026-05-10 22:43:08
-
-2. AVAXUSDT
-   Direction: SHORT (bearish)
-   Signal Time: 2026-05-10 15:43
-   Profit After Signal: 7.4%
-   Trend Duration: 11 hours
-   Supertrend Value: 34.59
-   Current Price: $32.4
-   Price Change: -7.44%
+1. OPUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 18.0%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 0.1921
+   Current Price: 0.1575
+   Price Change: -18.00%
    Volume Confirmation: True
    Confidence: medium
-   Timestamp: 2026-05-10 22:43:08
+   Timestamp: 2026-05-11 22:42:32
 
-3. LTCUSDT
-   Direction: SHORT (bearish)
-   Signal Time: 2026-05-10 01:43
+2. SUIUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 16.1%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 1.5483
+   Current Price: 1.2992
+   Price Change: -16.09%
+   Volume Confirmation: True
+   Confidence: medium
+   Timestamp: 2026-05-11 22:42:32
+
+3. MATICUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2024-06-03 00:00
+   Profit After Signal: 16.0%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 0.4516
+   Current Price: 0.3794
+   Price Change: -15.99%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+4. ARBUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 15.8%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 0.1675
+   Current Price: 0.1411
+   Price Change: -15.76%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+5. APTUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 15.0%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 1.3312
+   Current Price: 1.132
+   Price Change: -14.97%
+   Volume Confirmation: True
+   Confidence: medium
+   Timestamp: 2026-05-11 22:42:32
+
+6. UNIUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 13.9%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 4.5087
+   Current Price: 3.882
+   Price Change: -13.90%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+7. NEARUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 13.0%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 1.7842
+   Current Price: 1.552
+   Price Change: -13.02%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+8. INJUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 12.4%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 5.3114
+   Current Price: 4.654
+   Price Change: -12.38%
+   Volume Confirmation: True
+   Confidence: medium
+   Timestamp: 2026-05-11 22:42:32
+
+9. ATOMUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 12.1%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 2.2996
+   Current Price: 2.022
+   Price Change: -12.07%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+10. DOTUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 11.6%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 1.5431
+   Current Price: 1.364
+   Price Change: -11.61%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+11. DOGEUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 10.7%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 0.1247
+   Current Price: 0.1113
+   Price Change: -10.74%
+   Volume Confirmation: True
+   Confidence: medium
+   Timestamp: 2026-05-11 22:42:32
+
+12. ADAUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 10.2%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 0.3127
+   Current Price: 0.2807
+   Price Change: -10.24%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+13. LINKUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 10.2%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 11.7866
+   Current Price: 10.59
+   Price Change: -10.15%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+14. AVAXUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 9.8%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 11.2669
+   Current Price: 10.16
+   Price Change: -9.82%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+15. LTCUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 9.4%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 64.7646
+   Current Price: 58.67
+   Price Change: -9.41%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+16. ETHUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 8.4%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 2555.0708
+   Current Price: 2340.56
+   Price Change: -8.40%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+17. SOLUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 8.0%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 106.0509
+   Current Price: 97.56
+   Price Change: -8.01%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+18. XRPUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 8.0%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 1.5992
+   Current Price: 1.4716
+   Price Change: -7.98%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+19. BTCUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
+   Profit After Signal: 6.3%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 87246.9871
+   Current Price: 81784.68
+   Price Change: -6.26%
+   Volume Confirmation: False
+   Confidence: low
+   Timestamp: 2026-05-11 22:42:32
+
+20. BNBUSDT
+   Direction: BEARISH (bearish)
+   Signal Time: 2026-02-01 00:00
    Profit After Signal: 6.0%
-   Trend Duration: 9 hours
-   Supertrend Value: 73.43
-   Current Price: $76.31
-   Price Change: 5.99%
-   Volume Confirmation: False
-   Confidence: medium
-   Timestamp: 2026-05-10 22:43:08
-
-4. XRPUSDT
-   Direction: LONG (bullish)
-   Signal Time: 2026-05-10 00:43
-   Profit After Signal: 5.0%
-   Trend Duration: 5 hours
-   Supertrend Value: 0.51
-   Current Price: $0.55
-   Price Change: 5.05%
+   Trend Duration: 2376.0 hours
+   Supertrend Value: 706.0957
+   Current Price: 664.06
+   Price Change: -5.95%
    Volume Confirmation: False
    Confidence: low
-   Timestamp: 2026-05-10 22:43:08
+   Timestamp: 2026-05-11 22:42:32
 
-5. DOGEUSDT
-   Direction: SHORT (bearish)
-   Signal Time: 2026-05-10 14:43
-   Profit After Signal: 4.7%
-   Trend Duration: 11 hours
-   Supertrend Value: 0.12
-   Current Price: $0.13
-   Price Change: 4.69%
-   Volume Confirmation: False
-   Confidence: low
-   Timestamp: 2026-05-10 22:43:08
-
-6. MATICUSDT
-   Direction: LONG (bullish)
-   Signal Time: 2026-05-10 05:43
-   Profit After Signal: 3.6%
-   Trend Duration: 5 hours
-   Supertrend Value: 0.73
-   Current Price: $0.69
-   Price Change: -3.58%
-   Volume Confirmation: False
-   Confidence: medium
-   Timestamp: 2026-05-10 22:43:08
-
-7. ETHUSDT
-   Direction: SHORT (bearish)
-   Signal Time: 2026-05-10 16:43
-   Profit After Signal: 2.6%
-   Trend Duration: 14 hours
-   Supertrend Value: 3439.05
-   Current Price: $3488.4
-   Price Change: 2.6%
-   Volume Confirmation: False
-   Confidence: low
-   Timestamp: 2026-05-10 22:43:08
-
-8. ADAUSDT
-   Direction: SHORT (bearish)
-   Signal Time: 2026-05-10 17:43
-   Profit After Signal: 1.8%
-   Trend Duration: 13 hours
-   Supertrend Value: 0.45
-   Current Price: $0.46
-   Price Change: 1.78%
-   Volume Confirmation: False
-   Confidence: high
-   Timestamp: 2026-05-10 22:43:08
-
-9. BNBUSDT
-   Direction: SHORT (bearish)
-   Signal Time: 2026-05-10 11:43
-   Profit After Signal: 1.1%
-   Trend Duration: 5 hours
-   Supertrend Value: 585.76
-   Current Price: $573.74
-   Price Change: -1.08%
-   Volume Confirmation: False
-   Confidence: medium
-   Timestamp: 2026-05-10 22:43:08
-
-10. SOLUSDT
-   Direction: LONG (bullish)
-   Signal Time: 2026-05-10 13:43
-   Profit After Signal: 0.5%
-   Trend Duration: 14 hours
-   Supertrend Value: 146.29
-   Current Price: $145.67
-   Price Change: 0.46%
-   Volume Confirmation: True
-   Confidence: high
-   Timestamp: 2026-05-10 22:43:08
-
+============================================================
+Total coins scanned: 20 | Bullish: 0 | Bearish: 20

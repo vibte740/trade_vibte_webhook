@@ -1,4 +1,4 @@
-.PHONY: help install dev test lint format run clean docker-build docker-run smoke
+.PHONY: help install dev test lint format run clean docker-build docker-run smoke supertrend supertrend-current
 
 help:
 	@echo "Available commands:"
@@ -14,6 +14,8 @@ help:
 	@echo "  make clean        Remove build artifacts and cache"
 	@echo "  make docker-build Build Docker image"
 	@echo "  make docker-run   Run Docker container"
+	@echo "  make supertrend   Generate daily timestamped Supertrend report + archive"
+	@echo "  make supertrend-current  Update current daily_supertrend.txt with live data"
 
 install:
 	pip install -r requirements.txt
@@ -58,3 +60,9 @@ docker-build:
 
 docker-run:
 	docker run --rm -p 8000:8000 --env-file .env trade-vibte-webhook:latest
+
+supertrend:
+	.venv/bin/python scripts/generate_daily_supertrend.py
+
+supertrend-current:
+	.venv/bin/python scripts/update_supertrend_current.py
