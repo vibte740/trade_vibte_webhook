@@ -1,41 +1,45 @@
-# Supertrend Daily Analysis Reports
+# Supertrend Analysis Reports
 
-This directory contains automatically generated daily Supertrend analysis reports for cryptocurrency pairs.
+This directory contains automatically generated Supertrend analysis reports for cryptocurrency pairs.
 
 ## File Naming
 
-Reports are saved with timestamps:
+Reports use **asset-based filenames** that include the top bullish symbols:
+
 ```
-daily_supertrend_YYYY-MM-DD_HH-MM-SS.txt
+supertrend_ASSET1_ASSET2_..._YYYY-MM-DD_HH-MM-SS.txt
 ```
 
-Example: `daily_supertrend_2026-05-11_12-31-17.txt`
+Example: `supertrend_SOL_BTC_ETH_2026-05-11_23-09-03.txt`
 
-**Symlink:** `daily_supertrend_latest.txt` always points to the most recent report.
+If no bullish assets are found, the file is named `supertrend_NEUTRAL_YYYY-MM-DD_HH-MM-SS.txt`.
+
+**Symlinks:**
+- `supertrend_latest.txt` → most recent `.txt` report
+- `supertrend_latest.json` → most recent `.json` data
+- `supertrend_assets_YYYY-MM-DD.txt` → plain list of bullish symbols for that day
 
 ## Generation
 
-Reports are generated automatically by the scheduled job defined in [DAILY_SCHEDULE.md](../../docs/scheduling/DAILY_SCHEDULE.md).
-
-### Manual generation:
 ```bash
-make supertrend
+make supertrend-assets
 # or
-.venv/bin/python scripts/generate_daily_supertrend.py
+.venv/bin/python scripts/update_supertrend_current.py
 ```
 
-## Report Format
+## Report Content
 
-Each report includes:
+Each full report includes:
 - Generation timestamp
-- Supertrend parameters (ATR length = 10, multiplier = 3.0)
-- Top 10 profitable signals from the last 24 hours
-- Trend direction, duration, profit %, volume confirmation, confidence level
+- Settings: ATR period, multiplier, timeframe
+- Full coin table sorted by absolute deviation from Supertrend
+- Direction (BULLISH/BEARISH), latest signal (BUY/SELL/HOLD), signal time
+- Price vs Supertrend %, ATR, trend duration, volume confirmation, confidence
 
-## Archive
+The companion JSON (`supertrend_*.json`) contains the same data in machine-readable form.
 
-Old reports are retained indefinitely in this directory for historical analysis.
+The daily asset list (`supertrend_assets_YYYY-MM-DD.txt`) contains just the bullish symbol names, one per line, for quick consumption by other tools.
 
 ## Methodology
 
-See `skill/Supertrend.md` for the complete strategy logic and confidence scoring.
+See `skill/Supertrend.md` or `skill/CryptoSupertrend.md` for the complete strategy logic and confidence scoring algorithm.

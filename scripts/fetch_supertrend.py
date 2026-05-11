@@ -58,12 +58,14 @@ def main():
     # Sort by profit after signal
     records.sort(key=lambda x: abs(float(x["profit_after_signal"].rstrip("%"))), reverse=True)
 
-    # Save to text file
-    output_path = "/Users/zuzzuu/vibte/trade_vibte_webhook/docs/supertrend/daily_supertrend.txt"
+    # Timestamp for filename
+    ts = datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")
+
+    # Save to timestamped text file
+    output_path = f"/Users/zuzzuu/vibte/trade_vibte_webhook/docs/supertrend/supertrend_{ts}.txt"
     with open(output_path, "w") as f:
-        f.write(f"Daily Supertrend Analysis - {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write("Supertrend Settings: ATR Length=10, Multiplier=3.0\n")
-        f.write("Timeframes: 15m (primary), 1h, 4h (confirmation)\n")
+        f.write(f"Supertrend Analysis - {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write("Settings: ATR(10) × 3.0 | Interval: 1d\n")
         f.write("=" * 60 + "\n\n")
 
         for i, r in enumerate(records, 1):
@@ -72,24 +74,36 @@ def main():
             f.write(f"   Signal Time: {r['signal_time']}\n")
             f.write(f"   Profit After Signal: {r['profit_after_signal']}\n")
             f.write(f"   Trend Duration: {r['trend_duration_hours']} hours\n")
-            f.write(f"   Supertrend Value: {r['supertrend_value']}\n")
-            f.write(f"   Current Price: ${r['current_price']}\n")
-            f.write(f"   Price Change: {r['price_change_pct']}%\n")
+            f.write(f"   Supertrend: {r['supertrend_value']}\n")
+            f.write(f"   Price: ${r['current_price']}\n")
+            f.write(f"   Change: {r['price_change_pct']}%\n")
             f.write(f"   Volume Confirmation: {r['volume_confirmation']}\n")
             f.write(f"   Confidence: {r['confidence']}\n")
             f.write(f"   Timestamp: {r['timestamp']}\n")
             f.write("\n")
 
-    # Also save as JSON
-    json_path = "/Users/zuzzuu/vibte/trade_vibte_webhook/docs/supertrend/daily_supertrend.json"
+    # Also save timestamped JSON
+    json_path = f"/Users/zuzzuu/vibte/trade_vibte_webhook/docs/supertrend/supertrend_{ts}.json"
     with open(json_path, "w") as f:
         json.dump({
-            "timestamp": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+            "generated_at": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
             "best_supertrend_trades": records
         }, f, indent=2)
 
-    print(f"Saved {len(records)} records to {output_path}")
-    print(f"Saved JSON to {json_path}")
+    # Update latest symlinks (text and JSON)
+    txt_link = "/Users/zuzzuu/vibte/trade_vibte_webhook/docs/supertrend/supertrend_latest.txt"
+    json_link = "/Users/zuzzuu/vibte/trade_vibte_webhook/docs/supertrend/supertrend_latest.json"
+    import os
+    if os.path.exists(txt_link) or os.path.islink(txt_link):
+        os.unlink(txt_link)
+    os.symlink(f"supertrend_{ts}.txt", txt_link)
+    if os.path.exists(json_link) or os.path.islink(json_link):
+        os.unlink(json_link)
+    os.symlink(f"supertrend_{ts}.json", json_link)
+
+    print(f"✓ Saved: {output_path}")
+    print(f"✓ JSON: {json_path}")
+    print(f"✓ Updated symlinks: supertrend_latest.txt & supertrend_latest.json")
 
 
 if __name__ == "__main__":

@@ -206,18 +206,24 @@ mypy app/
 
 ## Daily Supertrend Analysis
 
-A scheduled script scans the top 10–20 crypto pairs and generates a daily Supertrend signal report highlighting profitable trends from the last 24 hours.
+A scheduled script scans the top 20 crypto pairs and generates a Supertrend signal report.
+Each run creates a **timestamped file** (`supertrend_YYYY-MM-DD_HH-MM-SS.txt`) and a
+`supertrend_latest.txt` symlink points to the most recent report.
 
 ### Usage
 
 ```bash
-# Generate report manually
-make supertrend
+# Generate a new timestamped report (live Binance data)
+make supertrend-current
 # or
+.venv/bin/python scripts/update_supertrend_current.py
+
+# Older synthetic/CCXT-based version (keeps historical archives)
 .venv/bin/python scripts/generate_daily_supertrend.py
 ```
 
-Reports are saved to `docs/supertrend/daily_supertrend_YYYY-MM-DD_HH-MM-SS.txt` with a `daily_supertrend_latest.txt` symlink.
+Reports are saved to `docs/supertrend/supertrend_YYYY-MM-DD_HH-MM-SS.txt`.
+The current report is always available at `docs/supertrend/supertrend_latest.txt`.
 
 ### Scheduling
 
