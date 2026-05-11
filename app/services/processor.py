@@ -8,7 +8,7 @@ from app.core.config import get_settings
 from app.models.schemas import TradingViewPayload
 from app.mcp.client import create_mcp_client, MCPClient
 from app.services.paper_engine import get_paper_engine, PaperTradingEngine
-from app.utils.rate_limiter import log_webhook_event
+from app.core.logging_config import log_webhook_event
 
 logger = structlog.get_logger(__name__)
 
@@ -71,13 +71,13 @@ class WebhookProcessor:
             if self.settings.dry_run:
                 # Dry-run mode: validate + simulate locally
                 order_price = payload.price or self._estimate_price(payload.ticker)
-                result = await self.paper_engine.process_order(
+                result = self.paper_engine.process_order(
                     ticker=payload.ticker,
                     action=payload.action,
                     requested_qty=payload.quantity,
                     price=order_price,
                     strategy_name=payload.strategy.name if payload.strategy else None,
-                    strategy_params=payload.strategy.params if payload.strategy else None,
+                    strategy_params=payload.strategy.parameters if payload.strategy else None,
                 )
                 result["dry_run"] = True
             else:
@@ -91,12 +91,8 @@ class WebhookProcessor:
             processing_ms = (datetime.utcnow() - start_time).total_seconds() * 1000
 
             enriched = {
-                **result,
                 "request_id": request_id,
                 "timestamp": datetime.utcnow().isoformat(),
-                "ticker": payload.ticker,
-                "action": payload.action.value,
-                "quantity": payload.quantity,
                 "processing_ms": round(processing_ms, 2),
                 "broker": self.settings.broker,
                 "mode": "paper" if self.settings.is_paper_trading else "live",
@@ -107,11 +103,10 @@ class WebhookProcessor:
                 logger,
                 "signal_result",
                 payload.dict(),
-                request_id=request_id,
                 **enriched,
             )
 
-            return enriched
+            return result
 
         except Exception as e:
             logger.error(

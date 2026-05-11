@@ -1,7 +1,7 @@
 """Rate limiting and request tracking utilities."""
 import time
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Dict, Optional, Tuple
 
 from structlog.stdlib import BoundLogger

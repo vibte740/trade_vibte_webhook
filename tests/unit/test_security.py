@@ -3,7 +3,7 @@ import hashlib
 import hmac
 import time
 from app.core.security import verify_signature, verify_tradingview_signature
-from app.utils.rate_limiter import SimpleRateLimiter, check_rate_limit, _request_tracker
+from app.utils.rate_limiter import SimpleRateLimiter, _request_tracker
 
 
 def test_hmac_signature_verification():
@@ -34,7 +34,6 @@ def test_invalid_signature():
 
 def test_tradingview_signer_wrapper():
     """Test TradingView signature wrapper."""
-    from structlog.stdlib import BoundLogger
     import structlog
 
     logger = structlog.get_logger("test")
@@ -66,8 +65,9 @@ class TestRateLimiter:
         limiter = SimpleRateLimiter(max_requests=2, window_seconds=1)
         limiter.is_allowed("ip1")
         limiter.is_allowed("ip2")
-        allowed1, _ = limiter.is_allowed("ip1")  # should hit limit
-        allowed2, _ = limiter.is_allowed("ip2")  # still has quota
+        limiter.is_allowed("ip1")  # exhaust ip1 limit (2nd call)
+        allowed1, _ = limiter.is_allowed("ip1")  # should be denied (3rd call)
+        allowed2, _ = limiter.is_allowed("ip2")  # still has quota (2nd call)
         assert allowed1 is False
         assert allowed2 is True
 

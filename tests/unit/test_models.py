@@ -54,7 +54,7 @@ class TestTradingViewPayload:
             ),
         )
         assert payload.strategy.name == "RSI_Divergence"
-        assert payload.strategy.params["rsi"] == 28
+        assert payload.strategy.parameters["rsi"] == 28
 
     def test_with_all_fields(self):
         """Full payload with optional fields."""

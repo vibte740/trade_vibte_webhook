@@ -3,10 +3,6 @@ import tempfile
 from pathlib import Path
 from app.services.paper_engine import (
     PaperTradingEngine,
-    Order,
-    Position,
-    Trade,
-    OrderSide,
 )
 
 
@@ -22,7 +18,7 @@ def test_buy_order_execution():
         result = engine.process_order(
             ticker="BTCUSDT",
             action="buy",
-            requested_qty=0.1,
+            requested_qty=0.01,
             price=50000.0,
         )
 
@@ -30,7 +26,7 @@ def test_buy_order_execution():
         assert result["order_id"].startswith("ORD-")
         assert engine.cash < 10000.0
         assert len(engine.positions) == 1
-        assert engine.positions["BTCUSDT"].quantity == 0.1
+        assert engine.positions["BTCUSDT"].quantity == 0.01
     finally:
         Path(journal).unlink(missing_ok=True)
 

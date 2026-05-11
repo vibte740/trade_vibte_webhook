@@ -52,7 +52,7 @@ def verify_signature(
         ).hexdigest()
 
         return hmac.compare_digest(received_sig.strip(), expected.strip())
-    except Exception as e:
+    except Exception:
         return False
 
 

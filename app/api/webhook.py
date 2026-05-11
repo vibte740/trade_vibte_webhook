@@ -4,7 +4,6 @@ import uuid
 from contextlib import asynccontextmanager
 from typing import Dict, Any
 
-import structlog
 from fastapi import FastAPI, Request, HTTPException, Depends, status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import get_settings
 from app.core.logging_config import get_logger, setup_logging, log_webhook_event
 from app.core.security import verify_tradingview_signature
-from app.models.schemas import TradingViewPayload, ProcessedWebhook, WebhookMetadata
+from app.models.schemas import TradingViewPayload
 from app.services.processor import WebhookProcessor
 from app.utils.rate_limiter import check_rate_limit, _request_tracker
 
@@ -219,7 +218,7 @@ async def test_webhook(
     Test endpoint (no signature required) for local development.
     Useful for simulating alerts without TradingView webhooks.
     """
-    request_id = f"test-{uuid.uuid4()[:8]}"
+    request_id = f"test-{uuid.uuid4().hex[:8]}"
     start_time = time.time()
 
     try:

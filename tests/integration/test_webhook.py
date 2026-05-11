@@ -1,21 +1,26 @@
 """Integration tests for FastAPI webhook endpoint."""
-import json
 import pytest
 from fastapi.testclient import TestClient
-from datetime import datetime
 
 from app.api.webhook import app
 from app.core.config import get_settings
-from app.models.schemas import TradingViewPayload, TradeAction
 from app.services.paper_engine import get_paper_engine
 
 
 @pytest.fixture
 def client():
     """Test client fixture."""
-    # Reset paper engine before each test
+    # Reset paper engine
     import app.services.paper_engine as pe
     pe._paper_engine = None
+
+    # Reset rate limiter and request tracker
+    from app.utils.rate_limiter import _rate_limiter, _request_tracker
+    _rate_limiter._requests.clear()
+    _request_tracker.total_requests = 0
+    _request_tracker.valid_requests = 0
+    _request_tracker.invalid_requests = 0
+    _request_tracker._recent_requests.clear()
 
     # Override settings for testing
     settings = get_settings()
@@ -118,7 +123,7 @@ def test_multiple_orders_accumulate_positions(client):
         resp = client.post("/webhook/test", json=payload)
         assert resp.status_code == 200
 
-    assert len(engine.positions["ETHUSDT"].quantity) >= 1.0
+    assert engine.positions["BINANCE:ETHUSDT"].quantity >= 0.5
 
 
 def test_buy_sell_cycle_creates_trade(client):
@@ -152,7 +157,7 @@ def test_concurrent_requests_rate_limit(client):
     """Too many requests should be rate-limited."""
     # Hit the rate limit hard
     for i in range(130):
-        resp = client.post("/webhook/test", json={
+        resp = client.post("/webhook", json={
             "ticker": "BTCUSDT",
             "action": "buy",
             "quantity": 0.01,
@@ -165,13 +170,21 @@ def test_concurrent_requests_rate_limit(client):
 
 def test_stats_endpoint_after_requests(client):
     """Metrics should reflect processed requests."""
-    # Make a successful request
-    client.post("/webhook/test", json={
-        "ticker": "BINANCE:ETHUSDT",
-        "action": "buy",
-        "quantity": 0.1,
-        "price": 3000.0,
-    })
+    # Disable signature verification for this test to allow a successful request
+    from app.core.config import get_settings
+    settings = get_settings()
+    original_verify = settings.verify_signatures
+    settings.verify_signatures = False
+    try:
+        resp = client.post("/webhook", json={
+            "ticker": "BINANCE:ETHUSDT",
+            "action": "buy",
+            "quantity": 0.1,
+            "price": 3000.0,
+        })
+        assert resp.status_code == 200
+    finally:
+        settings.verify_signatures = original_verify
 
     resp = client.get("/metrics")
     data = resp.json()

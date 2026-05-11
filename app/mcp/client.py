@@ -1,13 +1,10 @@
 """MCP (Model Context Protocol) adapter for TradingView integration."""
 import asyncio
 import json
-import logging
-import subprocess
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, AsyncGenerator
+from typing import Any, Dict, Optional
 
 import structlog
-from pydantic import BaseModel
 
 logger = structlog.get_logger(__name__)
 

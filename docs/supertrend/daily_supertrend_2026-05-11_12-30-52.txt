@@ -1,0 +1,7 @@
+Daily Supertrend Analysis - 2026-05-11 12:30:52
+============================================================
+Supertrend Settings: ATR Length=10, Multiplier=3.0
+Timeframes: 15m (primary), 1h, 4h (confirmation)
+============================================================
+
+No profitable Supertrend signals detected in the last 24 hours.

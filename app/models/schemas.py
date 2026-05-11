@@ -18,7 +18,7 @@ class TradeAction(str, Enum):
 class TickerData(BaseModel):
     """Strategy parameters that accompany an alert."""
     name: Optional[str] = Field(None, description="Strategy name")
-    params: dict = Field(default_factory=dict, description="Strategy key-value parameters")
+    parameters: dict = Field(default_factory=dict, description="Strategy key-value parameters")
 
 
 class TradingViewPayload(BaseModel):

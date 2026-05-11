@@ -1,13 +1,11 @@
 """Structured logging setup."""
-import json
 import logging
+import logging.config
 import sys
-from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import structlog
-from python_json_logger import json_logger
 
 
 def setup_logging(
@@ -32,64 +30,57 @@ def setup_logging(
         structlog.processors.UnicodeDecoder(),
     ]
 
+    # Determine which renderer to use
     if log_format == "json":
-        # JSON logging (ideal for production/cloud)
-        logging_config = {
-            "version": 1,
-            "disable_existing_loggers": False,
-            "formatters": {
-                "json": {
-                    "()": structlog.stdlib.ProcessorFormatter,
-                    "processor": structlog.processors.JSONRenderer(),
-                    "foreign_pre_chain": shared_processors,
-                }
-            },
-            "handlers": {
-                "console": {
-                    "class": "logging.StreamHandler",
-                    "formatter": "json",
-                    "stream": sys.stdout,
-                }
-            },
-            "root": {
-                "handlers": ["console"],
-                "level": log_level,
-            },
-        }
-        if log_file:
-            logging_config["handlers"]["file"] = {
-                "class": "logging.handlers.RotatingFileHandler",
-                "formatter": "json",
-                "filename": log_file,
-                "maxBytes": log_max_bytes,
-                "backupCount": log_backup_count,
-            }
-            logging_config["root"]["handlers"].append("file")
-
-        logging.config.dictConfig(logging_config)
-        structlog.configure(
-            processors=shared_processors + [structlog.stdlib.ProcessorFormatter.wrap_for_formatter],
-            context_class=dict,
-            logger_factory=structlog.stdlib.LoggerFactory(),
-            cache_logger_on_first_use=True,
-        )
+        renderer = structlog.processors.JSONRenderer()
     else:
-        # Human-readable console logging (dev/CI)
-        structlog.configure(
-            processors=shared_processors
-            + [
-                structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
-                structlog.dev.ConsoleRenderer(colors=True),
-            ],
-            context_class=dict,
-            logger_factory=structlog.stdlib.LoggerFactory(),
-            cache_logger_on_first_use=True,
-        )
-        logging.basicConfig(
-            format="%(message)s",
-            stream=sys.stdout,
-            level=getattr(logging, log_level.upper()),
-        )
+        renderer = structlog.dev.ConsoleRenderer(colors=True)
+
+    # Configure logging with ProcessorFormatter
+    logging_config = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "structured": {
+                "()": structlog.stdlib.ProcessorFormatter,
+                "processor": renderer,
+                "foreign_pre_chain": shared_processors,
+            }
+        },
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "formatter": "structured",
+                "stream": sys.stdout,
+            }
+        },
+        "root": {
+            "handlers": ["console"],
+            "level": log_level,
+        },
+    }
+
+    # Add file handler if specified
+    if log_file:
+        Path(log_file).parent.mkdir(parents=True, exist_ok=True)
+        logging_config["handlers"]["file"] = {
+            "class": "logging.handlers.RotatingFileHandler",
+            "formatter": "structured",
+            "filename": log_file,
+            "maxBytes": log_max_bytes,
+            "backupCount": log_backup_count,
+        }
+        logging_config["root"]["handlers"].append("file")
+
+    logging.config.dictConfig(logging_config)
+
+    # Configure structlog to wrap records for ProcessorFormatter
+    structlog.configure(
+        processors=shared_processors + [structlog.stdlib.ProcessorFormatter.wrap_for_formatter],
+        context_class=dict,
+        logger_factory=structlog.stdlib.LoggerFactory(),
+        cache_logger_on_first_use=True,
+    )
 
 
 def get_logger(name: str) -> structlog.stdlib.BoundLogger:
@@ -105,8 +96,7 @@ def log_webhook_event(
 ) -> None:
     """Standard webhook event logging."""
     logger.info(
-        "webhook_event",
-        event=event,
+        event,
         ticker=payload.get("ticker"),
         action=payload.get("action"),
         quantity=payload.get("quantity"),

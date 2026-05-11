@@ -1,0 +1,4 @@
+# Optional dependencies for analysis and data fetching
+ccxt>=4.0.0  # Crypto exchange API client for live OHLCV data
+pandas-ta>=0.3.0  # Alternative technical analysis library (optional)
+</content>

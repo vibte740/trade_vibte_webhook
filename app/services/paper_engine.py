@@ -1,20 +1,16 @@
 """Paper trading engine with order simulation and position management."""
 import json
-import logging
-from contextlib asynccontextmanager
 from dataclasses import dataclass, asdict
 from datetime import datetime
-from decimal import Decimal, ROUND_DOWN
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 import structlog
-from pydantic import BaseModel
 
 from app.core.config import get_settings
-from app.models.schemas import TradingViewPayload, TradeAction
+from app.models.schemas import TradeAction
 
 logger = structlog.get_logger(__name__)
 
@@ -157,10 +153,10 @@ class PaperTradingEngine:
         max_qty = max_capital / price
         return min(quantity, max_qty)
 
-    async def process_order(
+    def process_order(
         self,
         ticker: str,
-        action: TradeAction,
+        action: TradeAction | str,
         requested_qty: float,
         price: float,
         strategy_name: Optional[str] = None,
@@ -171,7 +167,7 @@ class PaperTradingEngine:
 
         Args:
             ticker: Trading symbol
-            action: Buy/sell/etc.
+            action: Buy/sell/etc. (TradeAction enum or string)
             requested_qty: Desired order size
             price: Current market price (or None for last known)
             strategy_name: Strategy that generated the signal
@@ -180,6 +176,15 @@ class PaperTradingEngine:
         Returns:
             Order result dict
         """
+        # Convert string to TradeAction if needed
+        if isinstance(action, str):
+            try:
+                action = TradeAction(action)
+            except ValueError:
+                return {
+                    "status": OrderStatus.REJECTED,
+                    "error": f"Unsupported action: {action}",
+                }
         try:
             # Map action to side
             action_map = {
@@ -201,17 +206,18 @@ class PaperTradingEngine:
                 if price is None:
                     return {"status": OrderStatus.REJECTED, "error": "No price available"}
 
-            # Apply position sizing limits
-            allowed_qty = self._calculate_position_size(ticker, price, requested_qty)
-            if allowed_qty < requested_qty:
-                logger.info(
-                    "position_size_limited",
-                    ticker=ticker,
-                    requested=requested_qty,
-                    allowed=allowed_qty,
-                )
-
-            quantity = allowed_qty
+            # Apply position sizing limits only for buys
+            if side == OrderSide.BUY:
+                quantity = self._calculate_position_size(ticker, price, requested_qty)
+                if quantity < requested_qty:
+                    logger.info(
+                        "position_size_limited",
+                        ticker=ticker,
+                        requested=requested_qty,
+                        allowed=quantity,
+                    )
+            else:
+                quantity = requested_qty
 
             # Check daily loss limit
             breached, limit = self._check_daily_loss_limit()
@@ -221,6 +227,14 @@ class PaperTradingEngine:
                     "status": OrderStatus.REJECTED,
                     "error": f"Daily loss limit exceeded (limit: {limit})",
                 }
+
+            # For sell orders, ensure we don't sell more than available position
+            if side == OrderSide.SELL:
+                existing_pos = self.positions.get(ticker)
+                if not existing_pos:
+                    return {"status": OrderStatus.REJECTED, "error": "No position to sell"}
+                if quantity > existing_pos.quantity:
+                    quantity = existing_pos.quantity
 
             # ── Create and fill order (simple market fill) ───────────────────────
             order_id = f"ORD-{datetime.utcnow().strftime('%Y%m%d-%H%M%S')}-{ticker[:6]}"
@@ -292,7 +306,6 @@ class PaperTradingEngine:
                         # Partial close
                         existing.quantity -= quantity
                         # For partial close, we need to book some P&L
-                        portion = quantity / (existing.quantity + quantity)
                         realized_pnl = (price - existing.entry_price) * quantity - order.commission
                         self._record_daily_pnl(realized_pnl)
                 else:

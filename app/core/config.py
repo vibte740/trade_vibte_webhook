@@ -78,7 +78,10 @@ class Settings(BaseSettings):
     @classmethod
     def validate_log_level(cls, v: str) -> str:
         allowed = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"}
-        return v.upper()
+        v_upper = v.upper()
+        if v_upper not in allowed:
+            raise ValueError(f"Invalid log level: {v}. Allowed: {', '.join(allowed)}")
+        return v_upper
 
     @property
     def is_paper_trading(self) -> bool:
